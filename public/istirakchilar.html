@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İştirakçılar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    li {
+      background-color: white;
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>İştirakçılar</h2>
+  <ul id="userList"></ul>
+
+  <script>
+    const userList = document.getElementById('userList');
+    const users = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
+    users.sort().forEach(name => {
+      const li = document.createElement("li");
+      li.innerText = name;
+      userList.appendChild(li);
+    });
+  </script>
+</body>
+</html>

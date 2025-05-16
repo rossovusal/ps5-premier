@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PS5 - Premier League</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+    .login-container {
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button.login {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .register-link, .reset-button {
+      margin-top: 10px;
+      display: block;
+      text-align: center;
+      color: white;
+      background-color: #28a745;
+      padding: 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .reset-button {
+      background-color: #dc3545;
+    }
+    .nav-buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .nav-buttons button {
+      width: 100px;
+      height: 100px;
+      border: none;
+      border-radius: 8px;
+      background-color: #343a40;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #welcome-message {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #155724;
+    }
+    #logout-button {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div id="login-form">
+      <input type="text" placeholder="İstifadəçi adı" id="login-username">
+      <input type="password" placeholder="Şifrə" id="login-password">
+      <button class="login" onclick="login()">GİRİŞ</button>
+      <a class="register-link" href="register.html">QEYDİYYAT</a>
+      <div class="reset-button" onclick="resetTournament()">TURNİRİ SIFIRLA</div>
+    </div>
+
+    <div id="welcome-message" style="display: none;"></div>
+    <button id="logout-button">Çıxış</button>
+
+    <div class="nav-buttons" id="nav-buttons" style="display: none;">
+      <button onclick="location.href='istirakchilar.html'">İŞTİRAKÇILAR</button>
+      <button onclick="location.href='oyunlar.html'">OYUNLAR</button>
+      <button onclick="location.href='tur.html'">TUR</button>
+      <button onclick="location.href='proqnozlar.html'">PROQNOZLAR</button>
+      <button onclick="location.href='oyun-neticeleri.html'">OYUN NƏTİCƏLƏRİ</button>
+      <button>TURNİR CƏDVƏLİ</button>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      const credentials = JSON.parse(localStorage.getItem('userCredentials') || '{}');
+
+      if (credentials[username] === password) {
+        localStorage.setItem('loggedInUser', username);
+        showWelcome(username);
+      } else {
+        alert("İstifadəçi adı və ya şifrə yalnışdır!");
+      }
+    }
+
+    function showWelcome(name) {
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('welcome-message').style.display = 'block';
+      document.getElementById('welcome-message').innerText = `Xoş gəldin, ${name}!`;
+      document.getElementById('nav-buttons').style.display = 'flex';
+      document.getElementById('logout-button').style.display = 'inline-block';
+    }
+
+    document.getElementById("logout-button").onclick = function() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "index.html";
+    };
+
+    window.onload = function() {
+      const loggedInUser = localStorage.getItem('loggedInUser');
+      const users = JSON.parse(localStorage.getItem("userPredictions") || "{}");
+      let regUsers = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+      for (let user in users) {
+        if (!regUsers.includes(user)) {
+          regUsers.push(user);
+        }
+      }
+      localStorage.setItem("registeredUsers", JSON.stringify(regUsers));
+      if (loggedInUser) {
+        showWelcome(loggedInUser);
+      }
+    };
+
+    function resetTournament() {
+      const pass = prompt("Təhlükəsizlik kodunu daxil edin:");
+      if (pass === "Milan1899!") {
+        localStorage.removeItem("userCredentials");
+        localStorage.removeItem("registeredUsers");
+        localStorage.removeItem("loggedInUser");
+        localStorage.removeItem("matches");
+        localStorage.removeItem("userPredictions");
+        localStorage.removeItem("officialResults");
+        alert("Turnir uğurla sıfırlandı!");
+        window.location.reload();
+      } else {
+        alert("Təhlükəsizlik kodu yalnışdır!");
+      }
+    }
+  </script>
+</body>
+</html>

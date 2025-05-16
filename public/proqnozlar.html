@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROQNOZLAR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #e9ecef;
+    }
+  </style>
+</head>
+<body>
+  <h2>PROQNOZLAR</h2>
+  <table id="predictionsTable">
+    <thead>
+      <tr id="headerRow">
+        <th>Oyunlar</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    let users = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+    const predictions = JSON.parse(localStorage.getItem("userPredictions") || "{}");
+    for (let user in predictions) {
+      if (!users.includes(user)) users.push(user);
+    }
+    localStorage.setItem("registeredUsers", JSON.stringify(users));
+
+    const participants = users.sort();
+    const matches = JSON.parse(localStorage.getItem("matches") || "[]");
+    const allPredictions = JSON.parse(localStorage.getItem("userPredictions") || "{}");
+    const officialResults = JSON.parse(localStorage.getItem("officialResults") || "[]");
+
+    const headerRow = document.getElementById("headerRow");
+    participants.forEach(name => {
+      const th = document.createElement("th");
+      th.innerText = name;
+      headerRow.appendChild(th);
+    });
+
+    const tableBody = document.getElementById("tableBody");
+    matches.forEach((match, rowIndex) => {
+      const isLast = rowIndex === matches.length - 1;
+      const tr = document.createElement("tr");
+      const tdMatch = document.createElement("td");
+      tdMatch.innerText = match;
+      if (isLast) tdMatch.style.backgroundColor = "#e0e0e0";
+      tr.appendChild(tdMatch);
+
+      participants.forEach(participant => {
+        const td = document.createElement("td");
+        if (isLast) td.style.backgroundColor = "#e0e0e0";
+        const value = (allPredictions[participant] && allPredictions[participant][rowIndex]) || "-";
+        td.innerText = value;
+        if (officialResults[rowIndex] && officialResults[rowIndex] === value) {
+          td.style.backgroundColor = "#d4edda";
+          td.style.color = "#155724";
+          td.style.fontWeight = "bold";
+        }
+        tr.appendChild(td);
+      });
+
+      tableBody.appendChild(tr);
+    });
+  
+  const predictionKey = "userPredictions";
+  const user = localStorage.getItem("loggedInUser");
+  const preds = JSON.parse(localStorage.getItem(predictionKey) || "{}");
+  if (user && preds[user]) {
+    window.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("input").forEach(el => el.disabled = true);
+    });
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OYUN NƏTİCƏLƏRİ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f8f9fa;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    .match-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+    .match-text {
+      min-width: 200px;
+      font-weight: bold;
+    }
+    select {
+      padding: 6px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .submit-btn {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #17a2b8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>OYUN NƏTİCƏLƏRİ</h2>
+  <form id="resultsForm">
+    <div id="matchesContainer"></div>
+    <button class="submit-btn" type="submit">NƏTİCƏLƏRİ HESABLA</button>
+  </form>
+
+  <script>
+    const matches = JSON.parse(localStorage.getItem("matches") || "[]");
+    const container = document.getElementById("matchesContainer");
+
+    if (matches.length === 0) {
+      container.innerHTML = "<p>Hələ oyunlar daxil edilməyib.</p>";
+    } else {
+      matches.forEach((match, index) => {
+        const row = document.createElement("div");
+        row.className = "match-row";
+
+        const label = document.createElement("div");
+        label.className = "match-text";
+        label.innerText = match;
+
+        const select = document.createElement("select");
+        select.name = 'result_' + index;
+        ['1', 'X', '2'].forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt;
+          option.innerText = opt;
+          select.appendChild(option);
+        });
+
+        row.appendChild(label);
+        row.appendChild(select);
+        container.appendChild(row);
+      });
+    }
+
+    document.getElementById("resultsForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const results = [];
+      matches.forEach((_, index) => {
+        const val = document.querySelector(`select[name='result_${index}']`).value;
+        results.push(val);
+      });
+
+      // Yalnız nəticələri saxla, matches toxunulmasın
+      localStorage.setItem("officialResults", JSON.stringify(results));
+      alert("Nəticələr hesablandı!");
+    });
+  </script>
+</body>
+</html>

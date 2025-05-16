@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qeydiyyat</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #e9ecef;
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+
+    .register-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button.register {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    a.back-link {
+      display: block;
+      margin-top: 15px;
+      text-decoration: none;
+      color: #007bff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>Qeydiyyat</h2>
+    <input type="text" placeholder="İstifadəçi adı" id="username">
+    <input type="password" placeholder="Şifrə" id="password">
+    <button class="register" onclick="register()">QEYDİYYATDAN KEÇ</button>
+    <a class="back-link" href="index.html">← Geri qayıt</a>
+  </div>
+
+  <script>
+    function register() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        alert("Zəhmət olmasa bütün xanaları doldurun.");
+        return;
+      }
+
+      // Save credentials
+      let credentials = JSON.parse(localStorage.getItem('userCredentials') || '{}');
+      if (credentials[username]) {
+        alert("Bu istifadəçi adı artıq mövcuddur.");
+        return;
+      }
+
+      credentials[username] = password;
+      localStorage.setItem('userCredentials', JSON.stringify(credentials));
+
+      // Add to registered users
+      let users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      if (!users.includes(username)) {
+        users.push(username);
+        localStorage.setItem('registeredUsers', JSON.stringify(users));
+      }
+
+      alert("Qeydiyyat uğurla tamamlandı!");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
