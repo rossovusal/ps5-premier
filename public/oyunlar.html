@@ -7,7 +7,8 @@
   <style>
     body { font-family: Arial; background: #f0f0f0; margin: 20px; text-align: center; }
     .match-row { margin: 10px 0; }
-    .match-row input { padding: 8px; margin: 0 5px; border-radius: 5px; border: 1px solid #ccc; }
+    .match-row input {
+    background-color: #fff; padding: 8px; margin: 0 5px; border-radius: 5px; border: 1px solid #ccc; }
     #countdown {
       margin-top: 40px;
       font-size: 32px;
@@ -32,7 +33,7 @@
 
   <form id="gamesForm">
     <div id="matchesContainer"></div>
-    <button type="submit">GÖNDƏR</button>
+    <button type="submit" style="background-color: green; color: white; font-size: 18px; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">GÖNDƏR</button>
   </form>
 
   <div id="countdown">
@@ -146,6 +147,13 @@
         startCountdown(diff);
       }
     });
-  </script>
+  
+  const matchRows = document.querySelectorAll(".match-row");
+  if (matchRows.length > 0) {
+    const lastInputs = matchRows[matchRows.length - 1].querySelectorAll("input");
+    lastInputs.forEach(input => input.style.backgroundColor = "#e0e0e0");
+  }
+
+</script>
 </body>
 </html>
