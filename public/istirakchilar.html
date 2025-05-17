@@ -47,24 +47,22 @@
 
   
   
-  <button id="drawButton" onclick="drawLots()" style="margin-top: 20px; padding: 10px 20px; font-weight: bold;">PÜŞK AT</button>
+  
+  <button id="drawButton" onclick="drawLots()" style="margin-top: 20px; padding: 10px 20px; font-weight: bold; background-color: green; color: white; border: none; border-radius: 6px; cursor: pointer;">PÜŞK AT</button>
   <table id="resultTable" style="margin: 20px auto; border-collapse: collapse; font-size: 18px; display: none;">
     <thead><tr><th style='border: 1px solid #999; padding: 8px;'>#</th><th style='border: 1px solid #999; padding: 8px;'>İştirakçı</th></tr></thead>
     <tbody id="tableBody"></tbody>
   </table>
   <script>
-    
     window.addEventListener("DOMContentLoaded", () => {
       const userList = document.getElementById('userList');
       const usersRaw = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
-      const users = [...new Set(usersRaw.map(name => name.trim()))];  // Ensure uniqueness
+      const users = [...new Set(usersRaw.map(name => name.trim()))];
       users.sort().forEach(name => {
         const li = document.createElement("li");
         li.innerText = name;
         userList.appendChild(li);
       });
-    }
-    );
     });
 
     function drawLots() {
@@ -73,14 +71,12 @@
         alert("Kod yalnışdır! Püşk atılmadı.");
         return;
       }
-
       const list = document.getElementById("userList");
-      const items = Array.from(list.children).map(li => li.textContent);
+      const items = Array.from(list.children).map(li => li.textContent.trim());
       for (let i = items.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [items[i], items[j]] = [items[j], items[i]];
       }
-
       document.getElementById("drawButton").style.display = "none";
       const tbody = document.getElementById("tableBody");
       tbody.innerHTML = "";
@@ -92,6 +88,9 @@
       document.getElementById("resultTable").style.display = "table";
     }
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
