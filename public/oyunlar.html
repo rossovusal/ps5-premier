@@ -1,254 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="az">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oyunlar</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f8f9fa;
-      text-align: center;
-    }
-    h2 {
-      margin-bottom: 20px;
-    }
-    .game-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-    .team-input {
-      width: 150px;
-      padding: 10px;
-      margin: 0 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    .gray-input {
-      background-color: #e0e0e0;
-    }
-    .deadline {
-      margin-top: 30px;
-    }
-    .deadline label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
-    .submit-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-  </style>
-</head>
+<head><meta charset="UTF-8"><title>Oyunlar</title></head>
 <body>
-  <h2>OYUNLAR</h2>
+<h2>OYUNLAR</h2>
 
-  <div id="countdown" style="margin-top: 40px; font-size: 32px; font-weight: bold; background: yellow; color: black; padding: 10px; border-radius: 10px; display: block; width: fit-content; margin-left: auto; margin-right: auto;" style="position: relative; margin-top: 40px; text-align: center;" style="margin-top: 20px; font-size: 32px; font-weight: bold; background: yellow; color: black; padding: 10px; border-radius: 10px; display: none; width: fit-content; margin-left: auto; margin-right: auto;">
-    <span id="timeLeft">48:00:00</span>
+<form>
+  <div>
+    <input type="text" placeholder="Komanda 1">
+    <input type="text" placeholder="Komanda 2">
   </div>
 
+  <label>Tarix seçin:</label>
+  <input type="date">
 
-  <p style="margin-top: 10px; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto; font-size: 15px; color: #333;">
-    1. 10 əsas, 1 ehtiyat oyun seçilir. Heç bir xana boş saxlanılmamalıdır. Oyunları daxil edərkən komandaların yerlərini doğru yazdığınıza əmin olun.<br><br>
-    2. Deadline avtomatik olaraq 48 saat təyin olunur. Buna görə, aparıcı oyunları seçərkən ən erkən başlayan oyunun minimum 48 saat sonra başlamasını diqqətdə saxlamalıdır. Aparıcı oyunları bazar ertəsi 13:00-dan cümə günü saat 13:00-dək sistemə daxil etməlidir. Digər vaxtlarda sistem deaktiv olacaq.
-  </p>
+  <label>Saat seçin:</label>
+  <input type="time">
 
-  <form id="gamesForm">
-    <div id="gamesContainer">
-      <!-- 11 rows of 2 input fields -->
-    </div>
-
-    <div class="deadline">
-      <label for="deadline-date">Tarix seçin:</label>
-      <input type="date" id="deadline-date" required>
-      <label for="deadline-time">Saat seçin:</label>
-      <input type="time" id="deadline-time" required>
-    </div>
-
-    <button type="submit" class="submit-btn">GÖNDƏR</button>
-  </form>
-
-  
-
-<script>
-  const now = new Date();
-  const currentTime = now.getTime();
-  const day = now.getUTCDay();
-  const hour = now.getUTCHours();
-  const minute = now.getUTCMinutes();
-
-  const offsetHours = 4;
-  const localHour = (hour + offsetHours) % 24;
-  const isWeekendLock = (
-    (day === 5 && localHour >= 13) || // Friday 13:00+
-    (day === 6) ||                    // Saturday
-    (day === 0) ||                    // Sunday
-    (day === 1 && localHour < 13)     // Monday before 13:00
-  );
-
-  const resetTime = new Date();
-  resetTime.setUTCHours(9, 0, 0, 0); // Monday 13:00 GMT+4 == 09:00 UTC
-  resetTime.setUTCDate(resetTime.getUTCDate() - resetTime.getUTCDay() + 1);
-  const resetMillis = resetTime.getTime();
-
-  const lastReset = parseInt(localStorage.getItem("lastResetTime") || "0");
-
-  if (currentTime >= resetMillis && currentTime > lastReset) {
-    localStorage.removeItem("matches");
-    localStorage.removeItem("gamesLocked");
-    localStorage.setItem("lastResetTime", currentTime.toString());
-  }
-
-  if (localStorage.getItem("gamesLocked") === "true" || isWeekendLock) {
-    window.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll("input, select, button").forEach(el => {
-        if (el.type !== "submit") el.disabled = true;
-      });
-    });
-  }
-</script>
-
-<script>
-  const now = new Date();
-  const currentTime = now.getTime();
-  const timezoneOffset = -4 * 60; // GMT+4
-  const monday = new Date(now);
-  monday.setUTCHours(9, 0, 0, 0); // 13:00 GMT+4 == 09:00 UTC
-  monday.setUTCDate(monday.getUTCDate() - monday.getUTCDay() + 1);
-  const resetTime = monday.getTime();
-  const lastReset = parseInt(localStorage.getItem("lastResetTime") || "0");
-
-  if (currentTime >= resetTime && currentTime > lastReset) {
-    localStorage.removeItem("userPredictions");
-    localStorage.removeItem("officialResults");
-    localStorage.setItem("lastResetTime", currentTime.toString());
-  }
-</script>
-
-<script>
-    const gamesContainer = document.getElementById('gamesContainer');
-
-    for (let i = 0; i < 11; i++) {
-      const row = document.createElement('div');
-      row.className = 'game-row';
-
-      const input1 = document.createElement('input');
-      const input2 = document.createElement('input');
-      input1.type = input2.type = 'text';
-      input1.className = input2.className = 'team-input';
-
-      if (i === 10) {
-        input1.classList.add('gray-input');
-        input2.classList.add('gray-input');
-      }
-
-      row.appendChild(input1);
-      row.appendChild(input2);
-      gamesContainer.appendChild(row);
-    }
-
-    document.getElementById('gamesForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const date = document.getElementById('deadline-date').value;
-      const time = document.getElementById('deadline-time').value;
-
-      if (!date || !time) {
-        alert("Zəhmət olmasa tarix və saat seçin.");
-        return;
-      }
-
-      const selectedDate = new Date(date + 'T' + time);
-      const now = new Date();
-      const diffHours = (selectedDate - now) / (1000 * 60 * 60);
-
-      const inputs = document.querySelectorAll('.team-input:not(.gray-input)');
-      for (let input of inputs) {
-        if (!input.value.trim()) {
-          alert("Bütün xanalar doldurulmalıdır.");
-          return;
-        }
-      }
-
-      if (diffHours < 48) {
-        alert("Deadline ən azı 48 saat sonra olmalıdır.");
-      } else {
-        // Save to localStorage
-        const matchPairs = [];
-        for (let i = 0; i < inputs.length; i += 2) {
-          const team1 = inputs[i].value.trim();
-          const team2 = inputs[i + 1].value.trim();
-          matchPairs.push(`${team1} - ${team2}`);
-        }
-        localStorage.setItem('matches', JSON.stringify(matchPairs));
-        alert("Uğurla göndərildi və oyunlar yadda saxlanıldı!");
-
-document.querySelectorAll("input, select, button").forEach(el => {
-  if (el.type !== "submit") el.disabled = true;
-});
-localStorage.setItem("gamesLocked", "true");
-
-      }
-    });
-  </script>
-
-
-
-
-
-
-
-<script>
-  function startCountdown(duration) {
-    const countdownEl = document.getElementById("countdown");
-    const timeSpan = document.getElementById("timeLeft");
-    countdownEl.style.display = "block";
-    let remaining = duration;
-
-    const timer = setInterval(() => {
-      const hours = Math.floor((remaining % (60 * 60 * 24)) / 3600);
-      const minutes = Math.floor((remaining % 3600) / 60);
-      const seconds = remaining % 60;
-
-      timeSpan.textContent =
-        String(hours).padStart(2, '0') + ":" +
-        String(minutes).padStart(2, '0') + ":" +
-        String(seconds).padStart(2, '0');
-
-      if (--remaining < 0) {
-        clearInterval(timer);
-        timeSpan.textContent = "00:00:00";
-      }
-    }, 1000);
-  }
-
-  const sendBtn = document.querySelector("form button[type='submit']");
-  sendBtn.addEventListener("click", () => {
-    const now = new Date();
-    const endTime = now.getTime() + 48 * 60 * 60 * 1000;
-    localStorage.setItem("deadlineCountdown", endTime.toString());
-  });
-
-  window.addEventListener("DOMContentLoaded", () => {
-    const end = parseInt(localStorage.getItem("deadlineCountdown"));
-    const now = new Date().getTime();
-    const diff = Math.floor((end - now) / 1000);
-    if (!isNaN(diff) && diff > 0 && localStorage.getItem("gamesLocked") === "true") {
-      startCountdown(diff);
-    }
-  });
-</script>
+  <button type="submit">GÖNDƏR</button>
+</form>
 
 </body>
 </html>
 
-<!-- git force -->
-<!-- git change -->
+<!-- git trigger -->
