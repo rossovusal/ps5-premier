@@ -8,7 +8,8 @@
     body { font-family: Arial; background: #f0f0f0; margin: 20px; text-align: center; }
     .match-row { margin: 10px 0; }
     .match-row input {
-    background-color: #fff; padding: 8px; margin: 0 5px; border-radius: 5px; border: 1px solid #ccc; }
+      background-color: #fff; padding: 8px; margin: 0 5px; border-radius: 5px; border: 1px solid #ccc;
+    }
     #countdown {
       margin-top: 40px;
       font-size: 32px;
@@ -22,14 +23,27 @@
       margin-left: auto;
       margin-right: auto;
     }
+    .info-box {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 6px;
+      font-size: 15px;
+      color: #333;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
   <h2>OYUNLAR</h2>
-  <p style="margin-top: 10px; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto; font-size: 15px; color: #333;">
-    1. 10 əsas, 1 ehtiyat oyun seçilir. Heç bir xana boş saxlanılmamalıdır. Oyunları daxil edərkən komandaların yerlərini doğru yazdığınıza əmin olun.<br><br>
-    2. Deadline avtomatik olaraq 48 saat təyin olunur. Buna görə, aparıcı oyunları seçərkən ən erkən başlayan oyunun minimum 48 saat sonra başlamasını diqqətdə saxlamalıdır. Aparıcı oyunları bazar ertəsi 13:00-dan cümə günü saat 13:00-dək sistemə daxil etməlidir. Digər vaxtlarda sistem deaktiv olacaq.
-  </p>
+  <button onclick="location.href='index.html'" style="margin: 15px 0; padding: 10px 20px; background-color: #333; color: white; border: none; font-weight: bold; border-radius: 6px; cursor: pointer;">ANA SƏHİFƏ</button>
+
+  <div class="info-box">
+    <p>1. 10 əsas, 1 ehtiyat oyun seçilir. Heç bir xana boş saxlanılmamalıdır. Oyunları daxil edərkən komandaların yerlərini doğru yazdığınıza əmin olun.</p>
+    <p>2. Deadline avtomatik olaraq 48 saat təyin olunur. Buna görə, aparıcı oyunları seçərkən ən erkən başlayan oyunun minimum 48 saat sonra başlamasını diqqətdə saxlamalıdır. Aparıcı oyunları bazar ertəsi 13:00-dan cümə günü saat 13:00-dək sistemə daxil etməlidir. Digər vaxtlarda sistem deaktiv olacaq.</p>
+  </div>
 
   <form id="gamesForm">
     <div id="matchesContainer"></div>
@@ -146,14 +160,13 @@
       if (!isNaN(diff) && diff > 0 && localStorage.getItem("gamesLocked") === "true") {
         startCountdown(diff);
       }
-    });
-  
-  const matchRows = document.querySelectorAll(".match-row");
-  if (matchRows.length > 0) {
-    const lastInputs = matchRows[matchRows.length - 1].querySelectorAll("input");
-    lastInputs.forEach(input => input.style.backgroundColor = "#e0e0e0");
-  }
 
-</script>
+      const matchRows = document.querySelectorAll(".match-row");
+      if (matchRows.length > 0) {
+        const lastInputs = matchRows[matchRows.length - 1].querySelectorAll("input");
+        lastInputs.forEach(input => input.style.backgroundColor = "#e0e0e0");
+      }
+    });
+  </script>
 </body>
 </html>
