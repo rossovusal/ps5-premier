@@ -55,6 +55,7 @@
   
   
   
+  
   <button id="drawButton" onclick="drawLots()" style="margin-top: 20px; padding: 10px 20px; font-weight: bold; background-color: green; color: white; border: none; border-radius: 6px; cursor: pointer;">PÜŞK AT</button>
   <ul id="userList"></ul>
   <table id="resultTable" style="margin: 20px auto; border-collapse: collapse; font-size: 16px; display: none;">
@@ -125,9 +126,7 @@
         row.innerHTML = \`
           <td style='border: 1px solid #999; padding: 8px;'>\${index + 1}</td>
           <td style='border: 1px solid #999; padding: 8px;'>\${name}</td>
-          <td style='border: 1px solid #999; padding: 8px;'>
-            <input type="date" style="padding: 5px;">
-          </td>
+          <td style='border: 1px solid #999; padding: 8px;'><input type="date" style="padding: 5px;"></td>
         \`;
         tbody.appendChild(row);
       });
@@ -136,6 +135,9 @@
 
     window.addEventListener("DOMContentLoaded", loadParticipants);
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
