@@ -54,7 +54,8 @@
   
   
   
-  <button id="drawButton" onclick="drawLots()" style="margin-top: 20px; padding: 10px 20px; font-weight: bold; background-color: green; color: white; border: none; border-radius: 6px; cursor: pointer; display: none;">PÜŞK AT</button>
+  
+  <button id="drawButton" onclick="drawLots()" style="margin-top: 20px; padding: 10px 20px; font-weight: bold; background-color: green; color: white; border: none; border-radius: 6px; cursor: pointer;">PÜŞK AT</button>
   <ul id="userList"></ul>
   <table id="resultTable" style="margin: 20px auto; border-collapse: collapse; font-size: 16px; display: none;">
     <thead>
@@ -80,9 +81,8 @@
         userList.appendChild(li);
       });
 
-      if (!localStorage.getItem("drawLocked")) {
-        document.getElementById("drawButton").style.display = "inline-block";
-      } else {
+      if (localStorage.getItem("drawLocked") === "true") {
+        document.getElementById("drawButton").style.display = "none";
         showPreviousDraw();
       }
     }
@@ -136,6 +136,9 @@
 
     window.addEventListener("DOMContentLoaded", loadParticipants);
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
