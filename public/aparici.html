@@ -14,6 +14,7 @@
 </head>
 <body>
   <h2>APARICI CƏDVƏLİ</h2>
+  <button onclick="drawAparici()" style="margin-top: 10px; padding: 10px 20px; background-color: green; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">PÜŞK AT</button>
   <p>Burada hər turun aparıcısı və təyin olunan tarix görünəcək.</p>
   <table>
     <thead>
@@ -23,18 +24,43 @@
         <th>Tarix</th>
       </tr>
     </thead>
-    <tbody id="apariciTableBody">
-    </tbody>
+    <tbody id="apariciTableBody"></tbody>
   </table>
   <script>
-    // Placeholder future dynamic data
-    const apariciData = JSON.parse(localStorage.getItem("apariciCedveli") || "[]");
-    const tbody = document.getElementById("apariciTableBody");
+    function drawAparici() {
+      const usersRaw = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+      const uniqueUsers = [...new Set(usersRaw.map(name => name.trim()))];
 
-    apariciData.forEach((item, index) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td>${index + 1}</td><td>${item.ad}</td><td>${item.tarix}</td>`;
-      tbody.appendChild(row);
+      const repeated = [];
+      for (let i = 0; i < 4; i++) {
+        repeated.push(...uniqueUsers);
+      }
+
+      for (let i = repeated.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [repeated[i], repeated[j]] = [repeated[j], repeated[i]];
+      }
+
+      localStorage.setItem("apariciCedveli", JSON.stringify(repeated));
+      renderTable(repeated);
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById("apariciTableBody");
+      tbody.innerHTML = "";
+      data.forEach((name, index) => {
+        const row = document.createElement("tr");
+        const date = new Date();
+        date.setDate(date.getDate() + index);
+        const dateStr = date.toISOString().split('T')[0];
+        row.innerHTML = `<td>${index + 1}</td><td>${name}</td><td>${dateStr}</td>`;
+        tbody.appendChild(row);
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const data = JSON.parse(localStorage.getItem("apariciCedveli") || "[]");
+      if (data.length > 0) renderTable(data);
     });
   </script>
 </body>
