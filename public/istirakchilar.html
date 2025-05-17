@@ -53,14 +53,18 @@
     <tbody id="tableBody"></tbody>
   </table>
   <script>
+    
     window.addEventListener("DOMContentLoaded", () => {
       const userList = document.getElementById('userList');
-      const users = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
+      const usersRaw = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
+      const users = [...new Set(usersRaw.map(name => name.trim()))];  // Ensure uniqueness
       users.sort().forEach(name => {
         const li = document.createElement("li");
         li.innerText = name;
         userList.appendChild(li);
       });
+    }
+    );
     });
 
     function drawLots() {
