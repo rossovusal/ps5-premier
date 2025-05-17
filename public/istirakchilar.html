@@ -43,5 +43,25 @@
       userList.appendChild(li);
     });
   </script>
+
+  <button onclick="drawLots()" style="margin-top: 20px; padding: 10px 20px; font-weight: bold;">PÜŞK AT</button>
+  <script>
+    function drawLots() {
+      const pass = prompt("Təhlükəsizlik kodunu daxil edin:");
+      if (pass !== "Milan1899!") {
+        alert("Kod yalnışdır! Püşk atılmadı.");
+        return;
+      }
+      const list = document.getElementById("userList");
+      const items = Array.from(list.children);
+      for (let i = items.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        list.appendChild(items[j]);
+        items.splice(j, 1);
+      }
+    }
+  </script>
 </body>
+</html>
+
 </html>
