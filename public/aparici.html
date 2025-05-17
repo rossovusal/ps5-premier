@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <title>APARICI CƏDVƏLİ</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; text-align: center; background-color: #f5f5f5; }
+    h2 { color: #333; }
+    table { margin: 20px auto; border-collapse: collapse; width: 80%; background-color: white; }
+    th, td { padding: 10px; border: 1px solid #ccc; }
+    th { background-color: #eee; }
+  </style>
+</head>
+<body>
+  <h2>APARICI CƏDVƏLİ</h2>
+  <p>Burada hər turun aparıcısı və təyin olunan tarix görünəcək.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Tur №</th>
+        <th>Aparıcı</th>
+        <th>Tarix</th>
+      </tr>
+    </thead>
+    <tbody id="apariciTableBody">
+    </tbody>
+  </table>
+  <script>
+    // Placeholder future dynamic data
+    const apariciData = JSON.parse(localStorage.getItem("apariciCedveli") || "[]");
+    const tbody = document.getElementById("apariciTableBody");
+
+    apariciData.forEach((item, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${index + 1}</td><td>${item.ad}</td><td>${item.tarix}</td>`;
+      tbody.appendChild(row);
+    });
+  </script>
+</body>
+</html>
