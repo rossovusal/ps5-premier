@@ -57,12 +57,15 @@
   <script>
     window.addEventListener("DOMContentLoaded", () => {
       const userList = document.getElementById('userList');
-      const usersRaw = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
-      const uniqueUsers = [...new Set(usersRaw.map(name => name.trim()))];
-      uniqueUsers.sort().forEach(name => {
-        const li = document.createElement("li");
-        li.innerText = name;
-        userList.appendChild(li);
+      
+    const usersRaw = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
+    const uniqueUsers = [...new Set(usersRaw.map(name => name.trim()))];
+    uniqueUsers.sort().forEach(name => {
+      const li = document.createElement("li");
+      li.innerText = name;
+      userList.appendChild(li);
+    });
+    (li);
       });
     });
 
