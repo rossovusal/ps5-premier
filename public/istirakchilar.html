@@ -45,18 +45,21 @@
   </script>
 
   
+  
   <button id="drawButton" onclick="drawLots()" style="margin-top: 20px; padding: 10px 20px; font-weight: bold;">PÜŞK AT</button>
   <table id="resultTable" style="margin: 20px auto; border-collapse: collapse; font-size: 18px; display: none;">
     <thead><tr><th style='border: 1px solid #999; padding: 8px;'>#</th><th style='border: 1px solid #999; padding: 8px;'>İştirakçı</th></tr></thead>
     <tbody id="tableBody"></tbody>
   </table>
   <script>
-    const userList = document.getElementById('userList');
-    const users = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
-    users.sort().forEach(name => {
-      const li = document.createElement("li");
-      li.innerText = name;
-      userList.appendChild(li);
+    window.addEventListener("DOMContentLoaded", () => {
+      const userList = document.getElementById('userList');
+      const users = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
+      users.sort().forEach(name => {
+        const li = document.createElement("li");
+        li.innerText = name;
+        userList.appendChild(li);
+      });
     });
 
     function drawLots() {
@@ -65,14 +68,15 @@
         alert("Kod yalnışdır! Püşk atılmadı.");
         return;
       }
+
       const list = document.getElementById("userList");
-      const items = Array.from(list.children).map(el => el.textContent);
+      const items = Array.from(list.children).map(li => li.textContent);
       for (let i = items.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [items[i], items[j]] = [items[j], items[i]];
       }
+
       document.getElementById("drawButton").style.display = "none";
-      document.getElementById("resultTable").style.display = "table";
       const tbody = document.getElementById("tableBody");
       tbody.innerHTML = "";
       items.forEach((name, index) => {
@@ -80,8 +84,12 @@
         row.innerHTML = `<td style='border: 1px solid #999; padding: 8px;'>${index + 1}</td><td style='border: 1px solid #999; padding: 8px;'>${name}</td>`;
         tbody.appendChild(row);
       });
+      document.getElementById("resultTable").style.display = "table";
     }
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
