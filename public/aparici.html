@@ -75,14 +75,20 @@
       document.getElementById("apariciTable").style.display = "table";
     }
 
+    
     function confirmAparici() {
       const inputs = document.querySelectorAll(".dateInput");
       const dates = Array.from(inputs).map(input => input.value || "");
+      if (dates.includes("")) {
+        alert("Zəhmət olmasa bütün tarixləri daxil edin!");
+        return;
+      }
       localStorage.setItem("apariciDates", dates.join(";"));
       localStorage.setItem("apariciCedveliConfirmed", "true");
       renderTable(repeatedList, true);
       document.getElementById("confirmButton").style.display = "none";
     }
+    
 
     window.addEventListener("DOMContentLoaded", () => {
       const drawn = localStorage.getItem("apariciCedveliDrawn") === "true";
