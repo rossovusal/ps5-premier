@@ -88,7 +88,14 @@
       });
 
       // Yalnız nəticələri saxla, matches toxunulmasın
+      
+      const pass = prompt("Təhlükəsizlik kodunu daxil edin:");
+      if (pass !== "Milan1899!") {
+        alert("Kod yalnışdır! Nəticələr hesablanmadı.");
+        return;
+      }
       localStorage.setItem("officialResults", JSON.stringify(results));
+    
       alert("Nəticələr hesablandı!");
     });
   </script>
