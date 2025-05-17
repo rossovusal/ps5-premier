@@ -93,6 +93,7 @@
     
 
     
+    
     function confirmAparici() {
       const inputs = document.querySelectorAll(".dateInput");
       const dates = Array.from(inputs).map(input => input.value || "");
@@ -102,9 +103,10 @@
       }
       localStorage.setItem("apariciDates", dates.join(";"));
       localStorage.setItem("apariciCedveliConfirmed", "true");
-      renderTable(repeatedList, false);
-      document.getElementById("confirmButton").style.display = "inline-block";
+      renderTable(repeatedList, true);
+      document.getElementById("confirmButton").style.display = "none";
     }
+    
     
 
     window.addEventListener("DOMContentLoaded", () => {
