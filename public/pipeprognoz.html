@@ -41,10 +41,8 @@
   </table>
 
   <script>
-    // Fetch the list of registered participants from localStorage
     const participants = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
     const uniqueParticipants = [...new Set(participants.filter(name => name.trim() !== "").map(name => name.trim()))];
-
     const tbody = document.getElementById("pipeTableBody");
 
     uniqueParticipants.forEach((name, index) => {
@@ -65,5 +63,3 @@
   </script>
 </body>
 </html>
-
-<!-- Git-detected change -->
