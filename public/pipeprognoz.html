@@ -41,7 +41,7 @@
 
   <script>
     const users = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
-    const uniqueUsers = [...new Set(users.map(u => u.trim()))];
+    const uniqueUsers = [...new Set(users.filter(u => u.trim() !== "").map(u => u.trim()))];
     const tbody = document.getElementById("pipeTableBody");
 
     uniqueUsers.forEach((user, index) => {
