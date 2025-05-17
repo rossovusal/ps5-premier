@@ -7,12 +7,10 @@
   <style>
     body { font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 20px; text-align: center; }
     h2 { color: #333; margin-bottom: 20px; }
-    table { margin: auto; border-collapse: collapse; width: 90%; background: white; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
-    th { background-color: #ddd; }
-    input[type="text"] { width: 90%; padding: 6px; }
-    select { width: 90%; padding: 6px; }
-    .home-btn {
+    ul { list-style: none; padding: 0; max-width: 400px; margin: auto; background-color: white; border: 1px solid #ccc; border-radius: 6px; }
+    li { padding: 10px; border-bottom: 1px solid #eee; }
+    li:last-child { border-bottom: none; }
+    button.home-btn {
       margin: 15px 0 25px;
       padding: 10px 20px;
       background-color: #333;
@@ -27,41 +25,17 @@
 <body>
   <h2>PIPEPROQNOZ</h2>
   <button class="home-btn" onclick="location.href='index.html'">ANA SƏHİFƏ</button>
-
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>İştirakçı</th>
-        <th>Komanda adı</th>
-        <th>Xal (1 - 100)</th>
-      </tr>
-    </thead>
-    <tbody id="pipeTableBody"></tbody>
-  </table>
+  <ul id="participantList"></ul>
 
   <script>
     const participants = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
-    const uniqueParticipants = participants
-      .filter(name => name.trim() !== "")
-      .map(name => name.trim());
-
-    const tbody = document.getElementById("pipeTableBody");
+    const uniqueParticipants = [...new Set(participants.filter(name => name.trim() !== "").map(name => name.trim()))];
+    const list = document.getElementById("participantList");
 
     uniqueParticipants.forEach((name, index) => {
-      const row = document.createElement("tr");
-
-      const options = Array.from({ length: 100 }, (_, i) => 
-        `<option value="\${i+1}">\${i+1}</option>`).join("");
-
-      row.innerHTML = \`
-        <td>\${index + 1}</td>
-        <td>\${name}</td>
-        <td><input type="text" placeholder="Komanda adı daxil edin"></td>
-        <td><select>\${options}</select></td>
-      \`;
-
-      tbody.appendChild(row);
+      const li = document.createElement("li");
+      li.textContent = (index + 1) + ". " + name;
+      list.appendChild(li);
     });
   </script>
 </body>
