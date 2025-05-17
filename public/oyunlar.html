@@ -1,26 +1,151 @@
 
 <!DOCTYPE html>
 <html lang="az">
-<head><meta charset="UTF-8"><title>Oyunlar</title></head>
+<head>
+  <meta charset="UTF-8" />
+  <title>Oyunlar</title>
+  <style>
+    body { font-family: Arial; background: #f0f0f0; margin: 20px; text-align: center; }
+    .match-row { margin: 10px 0; }
+    .match-row input { padding: 8px; margin: 0 5px; border-radius: 5px; border: 1px solid #ccc; }
+    #countdown {
+      margin-top: 40px;
+      font-size: 32px;
+      font-weight: bold;
+      background: yellow;
+      color: black;
+      padding: 10px;
+      border-radius: 10px;
+      display: block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
 <body>
-<h2>OYUNLAR</h2>
+  <h2>OYUNLAR</h2>
+  <p style="margin-top: 10px; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto; font-size: 15px; color: #333;">
+    1. 10 əsas, 1 ehtiyat oyun seçilir. Heç bir xana boş saxlanılmamalıdır. Oyunları daxil edərkən komandaların yerlərini doğru yazdığınıza əmin olun.<br><br>
+    2. Deadline avtomatik olaraq 48 saat təyin olunur. Buna görə, aparıcı oyunları seçərkən ən erkən başlayan oyunun minimum 48 saat sonra başlamasını diqqətdə saxlamalıdır. Aparıcı oyunları bazar ertəsi 13:00-dan cümə günü saat 13:00-dək sistemə daxil etməlidir. Digər vaxtlarda sistem deaktiv olacaq.
+  </p>
 
-<form>
-  <div>
-    <input type="text" placeholder="Komanda 1">
-    <input type="text" placeholder="Komanda 2">
+  <form id="gamesForm">
+    <div id="matchesContainer"></div>
+    <button type="submit">GÖNDƏR</button>
+  </form>
+
+  <div id="countdown">
+    <span id="timeLeft">48:00:00</span>
   </div>
 
-  <label>Tarix seçin:</label>
-  <input type="date">
+  <script>
+    const form = document.getElementById("gamesForm");
+    const container = document.getElementById("matchesContainer");
 
-  <label>Saat seçin:</label>
-  <input type="time">
+    const now = new Date();
+    const currentTime = now.getTime();
+    const day = now.getUTCDay();
+    const hour = now.getUTCHours();
+    const offsetHours = 4;
+    const localHour = (hour + offsetHours) % 24;
 
-  <button type="submit">GÖNDƏR</button>
-</form>
+    const isWeekendLock = (
+      (day === 5 && localHour >= 13) ||
+      (day === 6) ||
+      (day === 0) ||
+      (day === 1 && localHour < 13)
+    );
 
+    const resetTime = new Date();
+    resetTime.setUTCHours(9, 0, 0, 0);
+    resetTime.setUTCDate(resetTime.getUTCDate() - resetTime.getUTCDay() + 1);
+    const resetMillis = resetTime.getTime();
+
+    const lastReset = parseInt(localStorage.getItem("lastResetTime") || "0");
+
+    if (currentTime >= resetMillis && currentTime > lastReset) {
+      localStorage.removeItem("matches");
+      localStorage.removeItem("gamesLocked");
+      localStorage.setItem("lastResetTime", currentTime.toString());
+    }
+
+    if (localStorage.getItem("gamesLocked") === "true" || isWeekendLock) {
+      window.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll("input, select, button").forEach(el => {
+          if (el.type !== "submit") el.disabled = true;
+        });
+      });
+    }
+
+    const matches = JSON.parse(localStorage.getItem("matches") || "[]");
+
+    function addMatchRow(val1 = "", val2 = "") {
+      const row = document.createElement("div");
+      row.classList.add("match-row");
+      row.innerHTML = `
+        <input type="text" placeholder="Komanda 1" value="${val1}">
+        <input type="text" placeholder="Komanda 2" value="${val2}">
+      `;
+      container.appendChild(row);
+    }
+
+    if (matches.length) {
+      matches.forEach(match => addMatchRow(match[0], match[1]));
+    } else {
+      for (let i = 0; i < 11; i++) addMatchRow();
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const inputs = container.querySelectorAll("input");
+      const matchData = [];
+      for (let i = 0; i < inputs.length; i += 2) {
+        const team1 = inputs[i].value.trim();
+        const team2 = inputs[i+1].value.trim();
+        if (!team1 || !team2) {
+          alert("Bütün xanalar doldurulmalıdır.");
+          return;
+        }
+        matchData.push([team1, team2]);
+      }
+      localStorage.setItem("matches", JSON.stringify(matchData));
+      localStorage.setItem("gamesLocked", "true");
+      const endTime = Date.now() + 48 * 60 * 60 * 1000;
+      localStorage.setItem("deadlineCountdown", endTime.toString());
+      alert("Uğurla göndərildi və oyunlar yadda saxlanıldı!");
+      window.location.reload();
+    });
+
+    function startCountdown(duration) {
+      const timeSpan = document.getElementById("timeLeft");
+      let remaining = duration;
+
+      const timer = setInterval(() => {
+        const hours = Math.floor((remaining % (60 * 60 * 24)) / 3600);
+        const minutes = Math.floor((remaining % 3600) / 60);
+        const seconds = remaining % 60;
+
+        timeSpan.textContent =
+          String(hours).padStart(2, '0') + ":" +
+          String(minutes).padStart(2, '0') + ":" +
+          String(seconds).padStart(2, '0');
+
+        if (--remaining < 0) {
+          clearInterval(timer);
+          timeSpan.textContent = "00:00:00";
+        }
+      }, 1000);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const end = parseInt(localStorage.getItem("deadlineCountdown"));
+      const now = new Date().getTime();
+      const diff = Math.floor((end - now) / 1000);
+      if (!isNaN(diff) && diff > 0 && localStorage.getItem("gamesLocked") === "true") {
+        startCountdown(diff);
+      }
+    });
+  </script>
 </body>
 </html>
-
-<!-- git trigger -->
