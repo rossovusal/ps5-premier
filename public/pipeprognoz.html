@@ -5,25 +5,35 @@
   <meta charset="UTF-8">
   <title>PIPEPROQNOZ</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f2f2f2; text-align: center; padding: 20px; }
+    body { font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 20px; text-align: center; }
     h2 { color: #333; margin-bottom: 20px; }
-    table { margin: 0 auto; border-collapse: collapse; width: 90%; background-color: white; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+    table { margin: auto; border-collapse: collapse; width: 90%; background: white; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
     th { background-color: #ddd; }
     input[type="text"] { width: 90%; padding: 6px; }
-    select { padding: 6px; width: 80px; }
+    select { width: 80px; padding: 6px; }
+    button.home-btn {
+      margin: 15px 0 25px;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <h2>PIPEPROQNOZ</h2>
-  <button onclick="location.href='index.html'" style="margin: 10px 0 20px; padding: 10px 20px; background-color: #333; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">ANA SƏHİFƏ</button>
+  <button class="home-btn" onclick="location.href='index.html'">ANA SƏHİFƏ</button>
   <table>
     <thead>
       <tr>
         <th>#</th>
         <th>İştirakçı</th>
         <th>Komanda adı</th>
-        <th>Xal (1-100)</th>
+        <th>Xal (1 - 100)</th>
       </tr>
     </thead>
     <tbody id="pipeTableBody"></tbody>
@@ -35,23 +45,23 @@
     const tbody = document.getElementById("pipeTableBody");
 
     uniqueUsers.forEach((user, index) => {
-      const tr = document.createElement("tr");
+      const row = document.createElement("tr");
 
-      const selectOptions = Array.from({ length: 100 }, (_, i) => 
-        `<option value="\${i+1}">\${i+1}</option>`).join("");
+      const pointOptions = Array.from({ length: 100 }, (_, i) => 
+        `<option value="\${i + 1}">\${i + 1}</option>`).join("");
 
-      tr.innerHTML = \`
+      row.innerHTML = \`
         <td>\${index + 1}</td>
         <td>\${user}</td>
         <td><input type="text" placeholder="Komanda adı daxil edin"></td>
         <td>
           <select>
-            \${selectOptions}
+            \${pointOptions}
           </select>
         </td>
       \`;
 
-      tbody.appendChild(tr);
+      tbody.appendChild(row);
     });
   </script>
 </body>
