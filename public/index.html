@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PS5 - Premier League</title>
   <style>
     * {
@@ -60,13 +60,13 @@
     .nav-buttons {
       margin-top: 30px;
       display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
     }
     .nav-buttons button {
-      width: 100px;
-      height: 100px;
+      width: 200px;
+      height: 50px;
       border: none;
       border-radius: 8px;
       background-color: #343a40;
@@ -111,7 +111,7 @@
       <button onclick="location.href='tur.html'">TUR</button>
       <button onclick="location.href='proqnozlar.html'">PROQNOZLAR</button>
       <button onclick="location.href='oyun-neticeleri.html'">OYUN NƏTİCƏLƏRİ</button>
-      <button>TURNİR CƏDVƏLİ</button>
+      <button onclick="location.href='turnir.html'">TURNİR CƏDVƏLİ</button>
     </div>
   </div>
 
@@ -166,6 +166,9 @@
         localStorage.removeItem("matches");
         localStorage.removeItem("userPredictions");
         localStorage.removeItem("officialResults");
+        localStorage.removeItem("turLocked");
+        localStorage.removeItem("gamesLocked");
+        localStorage.setItem("lastResetTime", Date.now().toString());
         alert("Turnir uğurla sıfırlandı!");
         window.location.reload();
       } else {
