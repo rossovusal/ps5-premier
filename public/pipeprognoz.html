@@ -5,13 +5,10 @@
   <meta charset="UTF-8">
   <title>PIPEPROQNOZ</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 20px; text-align: center; }
-    h2 { color: #333; margin-bottom: 20px; }
-    table { margin: auto; border-collapse: collapse; width: 60%; background-color: white; }
-    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
-    th { background-color: #ddd; }
-    button.home-btn {
-      margin: 15px 0 25px;
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 20px; }
+    h2 { margin-bottom: 10px; }
+    .home-btn {
+      margin: 10px 0 20px;
       padding: 10px 20px;
       background-color: #333;
       color: white;
@@ -20,11 +17,54 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+    #submitBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #confirmation {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+      display: none;
+    }
+    table { margin: 20px auto; border-collapse: collapse; width: 60%; background-color: white; }
+    th, td { padding: 10px; border: 1px solid #ccc; }
+    th { background-color: #eee; }
+    #countdown {
+      font-size: 20px;
+      background-color: yellow;
+      padding: 10px;
+      font-weight: bold;
+      width: 200px;
+      margin: 20px auto;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
   <h2>PIPEPROQNOZ</h2>
   <button class="home-btn" onclick="location.href='index.html'">ANA SƏHİFƏ</button>
+
+  <div>
+    <input type="text" id="teamNameInput" placeholder="Komanda adını daxil et">
+    <button id="submitBtn">GÖNDƏR</button>
+    <div id="confirmation">PIPEPROQNOZ GÖNDƏRİLİB ✅</div>
+  </div>
+
+  <div id="countdown">00:00:00</div>
 
   <table>
     <thead>
@@ -37,6 +77,58 @@
   </table>
 
   <script>
+    const deadline = new Date("2025-05-20T00:00:00+04:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = deadline - now;
+
+      if (distance <= 0) {
+        document.getElementById("countdown").innerHTML = "00:00:00";
+        document.getElementById("submitBtn").disabled = true;
+        return;
+      }
+
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML = 
+        (hours < 10 ? "0" + hours : hours) + ":" +
+        (minutes < 10 ? "0" + minutes : minutes) + ":" +
+        (seconds < 10 ? "0" + seconds : seconds);
+    }
+
+    setInterval(updateCountdown, 1000);
+
+    const saved = localStorage.getItem("pipeproTeam");
+    const confirmed = localStorage.getItem("pipeproConfirmed");
+
+    const teamInput = document.getElementById("teamNameInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const confirmation = document.getElementById("confirmation");
+
+    if (saved) {
+      teamInput.value = saved;
+    }
+
+    if (confirmed === "true") {
+      teamInput.disabled = true;
+      submitBtn.style.display = "none";
+      confirmation.style.display = "block";
+    }
+
+    submitBtn.addEventListener("click", () => {
+      const name = teamInput.value.trim();
+      if (name !== "") {
+        localStorage.setItem("pipeproTeam", name);
+        localStorage.setItem("pipeproConfirmed", "true");
+        teamInput.disabled = true;
+        submitBtn.style.display = "none";
+        confirmation.style.display = "block";
+      }
+    });
+
     const participants = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
     const uniqueParticipants = [...new Set(participants.filter(name => name.trim() !== "").map(name => name.trim()))];
     const tbody = document.getElementById("participantTableBody");
