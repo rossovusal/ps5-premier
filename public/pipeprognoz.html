@@ -7,9 +7,9 @@
   <style>
     body { font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 20px; text-align: center; }
     h2 { color: #333; margin-bottom: 20px; }
-    ul { list-style: none; padding: 0; max-width: 400px; margin: auto; background-color: white; border: 1px solid #ccc; border-radius: 6px; }
-    li { padding: 10px; border-bottom: 1px solid #eee; }
-    li:last-child { border-bottom: none; }
+    table { margin: auto; border-collapse: collapse; width: 60%; background-color: white; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background-color: #ddd; }
     button.home-btn {
       margin: 15px 0 25px;
       padding: 10px 20px;
@@ -25,17 +25,26 @@
 <body>
   <h2>PIPEPROQNOZ</h2>
   <button class="home-btn" onclick="location.href='index.html'">ANA SƏHİFƏ</button>
-  <ul id="participantList"></ul>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>İştirakçı</th>
+      </tr>
+    </thead>
+    <tbody id="participantTableBody"></tbody>
+  </table>
 
   <script>
     const participants = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
     const uniqueParticipants = [...new Set(participants.filter(name => name.trim() !== "").map(name => name.trim()))];
-    const list = document.getElementById("participantList");
+    const tbody = document.getElementById("participantTableBody");
 
     uniqueParticipants.forEach((name, index) => {
-      const li = document.createElement("li");
-      li.textContent = (index + 1) + ". " + name;
-      list.appendChild(li);
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${index + 1}</td><td>${name}</td>`;
+      tbody.appendChild(tr);
     });
   </script>
 </body>
