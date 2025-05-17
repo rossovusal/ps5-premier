@@ -20,6 +20,7 @@
 </head>
 <body>
   <h2>APARICI CƏDVƏLİ</h2>
+  <button onclick="location.href='index.html'" style="margin-bottom: 15px; padding: 10px 20px; background-color: #333; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">ANA SƏHİFƏ</button>
   <button id="drawButton" onclick="drawAparici()">PÜŞK AT</button>
   <button id="confirmButton" onclick="confirmAparici()">APARICI CƏDVƏLİNİ TƏSDİQLƏ</button>
   <table id="apariciTable" style="display: none;">
@@ -109,9 +110,10 @@
     
     
 
+    
     window.addEventListener("DOMContentLoaded", () => {
-      const drawn = localStorage.getItem("apariciCedveliDrawn") === "true";
       const confirmed = localStorage.getItem("apariciCedveliConfirmed") === "true";
+      const drawn = localStorage.getItem("apariciCedveliDrawn") === "true";
       const data = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
       const uniqueUsers = [...new Set(data.map(name => name.trim()))];
       repeatedList = [];
@@ -120,15 +122,16 @@
       }
 
       if (confirmed) {
-        renderTable(repeatedList, false);
+        renderTable(repeatedList, true);
         document.getElementById("drawButton").style.display = "none";
-        document.getElementById("confirmButton").style.display = "inline-block";
+        document.getElementById("confirmButton").style.display = "none";
       } else if (drawn) {
         renderTable(repeatedList, false);
         document.getElementById("drawButton").style.display = "none";
         document.getElementById("confirmButton").style.display = "inline-block";
       }
     });
+    
   </script>
 </body>
 </html>
