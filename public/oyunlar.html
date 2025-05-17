@@ -200,6 +200,9 @@ localStorage.setItem("gamesLocked", "true");
     });
   </script>
 
+
+
+
 <script>
   function startCountdown(duration) {
     const countdownEl = document.getElementById("countdown");
@@ -212,7 +215,7 @@ localStorage.setItem("gamesLocked", "true");
       const minutes = Math.floor((remaining % 3600) / 60);
       const seconds = remaining % 60;
 
-      timeSpan.textContent = 
+      timeSpan.textContent =
         String(hours).padStart(2, '0') + ":" +
         String(minutes).padStart(2, '0') + ":" +
         String(seconds).padStart(2, '0');
@@ -235,7 +238,9 @@ localStorage.setItem("gamesLocked", "true");
     const end = parseInt(localStorage.getItem("deadlineCountdown"));
     const now = new Date().getTime();
     const diff = Math.floor((end - now) / 1000);
-    if (diff > 0) startCountdown(diff);
+    if (!isNaN(diff) && diff > 0 && localStorage.getItem("gamesLocked") === "true") {
+      startCountdown(diff);
+    }
   });
 </script>
 
