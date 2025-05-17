@@ -57,6 +57,15 @@
   <h2>PIPEPROQNOZ</h2>
   <button class="home-btn" onclick="location.href='index.html'">ANA SƏHİFƏ</button>
 
+  <div style="max-width: 900px; margin: 0 auto; background-color: #fff; padding: 20px; text-align: left; border: 1px solid #ccc; border-radius: 6px;">
+    <ol style="line-height: 1.6;">
+      <li><strong>Deadline</strong> 11-ci tur başlayanadək təyin olunub. Həmin vaxta qədər Pipeproqnozu göndərməyən iştirakçı Pipeproqnoz imkanından imtina etmiş sayılacaq və onun Pipeproqnoz gedişi 0 hesablanacaq.</li>
+      <li>İştirakçı Pipeproqnozunu seçdikdən sonra <strong>maksimum hesabındakı xal qədər</strong>, bu xal 100 və ya daha çoxdursa, maksimum 100 xal gediş edə bilər.</li>
+      <li>Pipeproqnoz nəticələrinə əsasən sonda gediş edilmiş xal iştirakçının hesabına <strong>əlavə olunur və ya çıxılır</strong>.</li>
+    </ol>
+  </div>
+
+
   <div>
     <input type="text" id="teamNameInput" placeholder="Komanda adını daxil et">
     <select id="scoreSelect">
@@ -185,6 +194,20 @@
 
     const input = document.getElementById("teamNameInput");
     const select = document.getElementById("scoreSelect");
+    // Məhdudlaşdırılmış xal yüklə
+    const totalScores = JSON.parse(localStorage.getItem("totalScores") || "{}");
+    const maxScore = totalScores[user] ? parseInt(totalScores[user]) : 100;
+
+    // Dropdownu məhdudlaşdır
+    const scoreSelect = document.getElementById("scoreSelect");
+    while (scoreSelect.options.length > 1) scoreSelect.remove(1); // təmizlə
+    for (let i = 1; i <= maxScore; i++) {
+      let opt = document.createElement("option");
+      opt.value = i;
+      opt.text = i;
+      scoreSelect.appendChild(opt);
+    }
+
     const submitBtn = document.getElementById("submitBtn");
     const confirmation = document.getElementById("confirmation");
 
