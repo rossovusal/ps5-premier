@@ -85,8 +85,8 @@
       }
       localStorage.setItem("apariciDates", dates.join(";"));
       localStorage.setItem("apariciCedveliConfirmed", "true");
-      renderTable(repeatedList, true);
-      document.getElementById("confirmButton").style.display = "none";
+      renderTable(repeatedList, false);
+      document.getElementById("confirmButton").style.display = "inline-block";
     }
     
 
@@ -101,9 +101,9 @@
       }
 
       if (confirmed) {
-        renderTable(repeatedList, true);
+        renderTable(repeatedList, false);
         document.getElementById("drawButton").style.display = "none";
-        document.getElementById("confirmButton").style.display = "none";
+        document.getElementById("confirmButton").style.display = "inline-block";
       } else if (drawn) {
         renderTable(repeatedList, false);
         document.getElementById("drawButton").style.display = "none";
