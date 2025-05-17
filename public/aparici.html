@@ -56,24 +56,41 @@
       document.getElementById("confirmButton").style.display = "inline-block";
     }
 
+    
     function renderTable(data, confirmed = false) {
       const tbody = document.getElementById("apariciTableBody");
       tbody.innerHTML = "";
+      const storedDates = localStorage.getItem("apariciDates")?.split(";") || [];
+
       data.forEach((name, index) => {
         const row = document.createElement("tr");
+        const dateInput = confirmed
+          ? storedDates[index] || ""
+          : `<input type="date" class="dateInput">`;
+
         row.innerHTML = `
           <td>${index + 1}</td>
           <td>${name}</td>
-          <td>${
-            confirmed
-              ? localStorage.getItem("apariciDates")?.split(";")[index] || ""
-              : `<input type="date" class="dateInput">`
-          }</td>
+          <td>${dateInput}</td>
         `;
         tbody.appendChild(row);
       });
+
       document.getElementById("apariciTable").style.display = "table";
+
+      if (confirmed) {
+        // Disable inputs visually
+        const cells = document.querySelectorAll("#apariciTable td");
+        cells.forEach(cell => {
+          const input = cell.querySelector("input");
+          if (input) {
+            const val = input.value;
+            cell.innerHTML = val;
+          }
+        });
+      }
     }
+    
 
     
     function confirmAparici() {
