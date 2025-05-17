@@ -112,5 +112,18 @@ localStorage.setItem("turLocked", "true");
 
     });
   </script>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const deadline = parseInt(localStorage.getItem("deadlineCountdown"));
+    const now = new Date().getTime();
+    const diff = deadline - now;
+
+    if (!isNaN(diff) && diff <= 0) {
+      document.querySelectorAll("select").forEach(el => el.disabled = true);
+    }
+  });
+</script>
 </body>
+
 </html>
