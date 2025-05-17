@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <title>PIPEPROGNOZ</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; text-align: center; padding: 20px; }
+    h2 { color: #333; }
+    table { margin: 20px auto; border-collapse: collapse; width: 90%; background-color: white; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+    th { background-color: #eee; }
+    input[type="text"] { width: 90%; padding: 6px; }
+    select { padding: 6px; }
+  </style>
+</head>
+<body>
+  <h2>PIPEPROGNOZ</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>İştirakçı</th>
+        <th>Komanda</th>
+        <th>Xal (1 - 100)</th>
+      </tr>
+    </thead>
+    <tbody id="prognozBody"></tbody>
+  </table>
+
+  <script>
+    const users = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
+    const uniqueUsers = [...new Set(users.map(name => name.trim()))];
+
+    const tbody = document.getElementById("prognozBody");
+
+    uniqueUsers.forEach((name, index) => {
+      const row = document.createElement("tr");
+
+      const pointOptions = Array.from({length: 100}, (_, i) => i + 1)
+        .map(val => `<option value="\${val}">\${val}</option>`)
+        .join("");
+
+      row.innerHTML = \`
+        <td>\${index + 1}</td>
+        <td>\${name}</td>
+        <td><input type="text" placeholder="Komanda adı"></td>
+        <td>
+          <select>
+            \${pointOptions}
+          </select>
+        </td>
+      \`;
+
+      tbody.appendChild(row);
+    });
+  </script>
+</body>
+</html>
