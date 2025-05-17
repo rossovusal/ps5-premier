@@ -17,13 +17,12 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    input[type="text"] {
+    input[type="text"], select {
       padding: 10px;
-      width: 250px;
       font-size: 16px;
       border-radius: 6px;
       border: 1px solid #ccc;
-      margin-right: 10px;
+      margin-right: 5px;
     }
     #submitBtn {
       padding: 10px 20px;
@@ -40,9 +39,6 @@
       color: green;
       display: none;
     }
-    table { margin: 20px auto; border-collapse: collapse; width: 60%; background-color: white; }
-    th, td { padding: 10px; border: 1px solid #ccc; }
-    th { background-color: #eee; }
     #countdown {
       font-size: 20px;
       background-color: yellow;
@@ -52,6 +48,9 @@
       margin: 20px auto;
       border-radius: 6px;
     }
+    table { margin: 20px auto; border-collapse: collapse; width: 90%; background-color: white; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+    th { background-color: #eee; }
   </style>
 </head>
 <body>
@@ -60,6 +59,10 @@
 
   <div>
     <input type="text" id="teamNameInput" placeholder="Komanda adını daxil et">
+    <select id="scoreSelect">
+      <option value="">Xal seçin</option>
+      ${Array.from({length: 100}, (_, i) => `<option value="\${i+1}">\${i+1}</option>`).join("")}
+    </select>
     <button id="submitBtn">GÖNDƏR</button>
     <div id="confirmation">PIPEPROQNOZ GÖNDƏRİLİB ✅</div>
   </div>
@@ -71,6 +74,8 @@
       <tr>
         <th>#</th>
         <th>İştirakçı</th>
+        <th>Komanda Adı</th>
+        <th>Xal</th>
       </tr>
     </thead>
     <tbody id="participantTableBody"></tbody>
@@ -79,63 +84,76 @@
   <script>
     const deadline = new Date("2025-05-20T00:00:00+04:00").getTime();
 
+    const input = document.getElementById("teamNameInput");
+    const select = document.getElementById("scoreSelect");
+    const submitBtn = document.getElementById("submitBtn");
+    const confirmation = document.getElementById("confirmation");
+
+    const user = localStorage.getItem("currentUser") || ""; // assumed currentUser is saved on login
+
     function updateCountdown() {
       const now = new Date().getTime();
       const distance = deadline - now;
 
       if (distance <= 0) {
         document.getElementById("countdown").innerHTML = "00:00:00";
-        document.getElementById("submitBtn").disabled = true;
-        return;
+        input.disabled = true;
+        select.disabled = true;
+        submitBtn.disabled = true;
+        return true;
       }
 
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const h = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, "0");
+      const m = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, "0");
+      const s = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, "0");
 
-      document.getElementById("countdown").innerHTML = 
-        (hours < 10 ? "0" + hours : hours) + ":" +
-        (minutes < 10 ? "0" + minutes : minutes) + ":" +
-        (seconds < 10 ? "0" + seconds : seconds);
+      document.getElementById("countdown").innerHTML = h + ":" + m + ":" + s;
+      return false;
     }
 
     setInterval(updateCountdown, 1000);
 
-    const saved = localStorage.getItem("pipeproTeam");
-    const confirmed = localStorage.getItem("pipeproConfirmed");
+    const data = JSON.parse(localStorage.getItem("pipeproqnozData") || "{}");
+    const isLocked = updateCountdown();
+    const hasSubmitted = data[user] !== undefined;
 
-    const teamInput = document.getElementById("teamNameInput");
-    const submitBtn = document.getElementById("submitBtn");
-    const confirmation = document.getElementById("confirmation");
-
-    if (saved) {
-      teamInput.value = saved;
-    }
-
-    if (confirmed === "true") {
-      teamInput.disabled = true;
+    if (hasSubmitted) {
+      input.value = data[user].team;
+      select.value = data[user].score;
+      input.disabled = true;
+      select.disabled = true;
       submitBtn.style.display = "none";
       confirmation.style.display = "block";
     }
 
+    if (isLocked && !hasSubmitted) {
+      input.disabled = true;
+      select.disabled = true;
+      submitBtn.disabled = true;
+    }
+
     submitBtn.addEventListener("click", () => {
-      const name = teamInput.value.trim();
-      if (name !== "") {
-        localStorage.setItem("pipeproTeam", name);
-        localStorage.setItem("pipeproConfirmed", "true");
-        teamInput.disabled = true;
+      const team = input.value.trim();
+      const score = select.value;
+      if (team && score && user) {
+        data[user] = { team, score };
+        localStorage.setItem("pipeproqnozData", JSON.stringify(data));
+        input.disabled = true;
+        select.disabled = true;
         submitBtn.style.display = "none";
         confirmation.style.display = "block";
       }
     });
 
+    // Populate the final table
     const participants = JSON.parse(localStorage.getItem("registeredUsers") || "[]");
-    const uniqueParticipants = [...new Set(participants.filter(name => name.trim() !== "").map(name => name.trim()))];
+    const uniqueParticipants = [...new Set(participants.filter(n => n.trim() !== "").map(n => n.trim()))];
     const tbody = document.getElementById("participantTableBody");
 
     uniqueParticipants.forEach((name, index) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${index + 1}</td><td>${name}</td>`;
+      const userData = data[name] || { team: "", score: "" };
+      tr.innerHTML = `<td>${index + 1}</td><td>${name}</td><td>${userData.team}</td><td>${userData.score}</td>`;
       tbody.appendChild(tr);
     });
   </script>
