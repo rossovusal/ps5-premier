@@ -50,7 +50,9 @@
   
   
   
+  
   <button id="drawButton" onclick="drawLots()" style="margin-top: 20px; padding: 10px 20px; font-weight: bold; background-color: green; color: white; border: none; border-radius: 6px; cursor: pointer;">PÜŞK AT</button>
+  <ul id="userList"></ul>
   <table id="resultTable" style="margin: 20px auto; border-collapse: collapse; font-size: 18px; display: none;">
     <thead><tr><th style='border: 1px solid #999; padding: 8px;'>#</th><th style='border: 1px solid #999; padding: 8px;'>İştirakçı</th></tr></thead>
     <tbody id="tableBody"></tbody>
@@ -58,16 +60,17 @@
   <script>
     let uniqueUsers = [];
 
-    window.addEventListener("DOMContentLoaded", () => {
+    function loadParticipants() {
       const userList = document.getElementById('userList');
+      userList.innerHTML = "";
       const usersRaw = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
       uniqueUsers = [...new Set(usersRaw.map(name => name.trim()))];
       uniqueUsers.sort().forEach(name => {
         const li = document.createElement("li");
-        li.innerText = name;
+        li.textContent = name;
         userList.appendChild(li);
       });
-    });
+    }
 
     function drawLots() {
       const pass = prompt("Təhlükəsizlik kodunu daxil edin:");
@@ -92,7 +95,12 @@
       });
       document.getElementById("resultTable").style.display = "table";
     }
+
+    window.addEventListener("DOMContentLoaded", loadParticipants);
   </script>
+</body>
+</html>
+
 </body>
 </html>
 
