@@ -22,6 +22,23 @@
   color: white;
 }
 
+.button-style {
+  background-color: white;
+  color: black;
+  border: 2px solid #ccc;
+  padding: 12px 20px;
+  margin: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.button-style:hover {
+  background-color: orange;
+  color: white;
+}
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -114,25 +131,25 @@
     <div id="login-form">
       <input type="text" placeholder="İstifadəçi adı" id="login-username">
       <input type="password" placeholder="Şifrə" id="login-password">
-      <button class="button-style" class="login" onclick="login()">GİRİŞ</button>
+      <button class="button-style" class="button-style" class="login" onclick="login()">GİRİŞ</button>
       <a class="register-link" href="register.html">QEYDİYYAT</a>
       <div class="reset-button" onclick="resetTournament()">TURNİRİ SIFIRLA</div>
     </div>
 
     <div id="welcome-message" style="display: none;"></div>
-    <button class="button-style" id="logout-button">Çıxış</button>
+    <button class="button-style" class="button-style" id="logout-button">Çıxış</button>
 
     <div class="nav-buttons" id="nav-buttons" style="display: none;">
-      <button class="button-style" onclick="location.href='istirakchilar.html'">İŞTİRAKÇILAR</button>
-<button class="button-style" onclick="location.href='aparici.html'">APARICI CƏDVƏLİ</button>
+      <button class="button-style" class="button-style" onclick="location.href='istirakchilar.html'">İŞTİRAKÇILAR</button>
+<button class="button-style" class="button-style" onclick="location.href='aparici.html'">APARICI CƏDVƏLİ</button>
 
 
-      <button class="button-style" onclick="location.href='oyunlar.html'">OYUNLAR</button>
-      <button class="button-style" onclick="location.href='tur.html'">TUR</button>
-      <button class="button-style" onclick="location.href='proqnozlar.html'">PROQNOZLAR</button>
-      <button class="button-style" onclick="location.href='oyun-neticeleri.html'">OYUN NƏTİCƏLƏRİ</button>
-      <button class="button-style" onclick="location.href='pipeprognoz.html'">PIPEPROQNOZ</button>
-<button class="button-style" onclick="location.href='turnir.html'">TURNİR CƏDVƏLİ</button>
+      <button class="button-style" class="button-style" onclick="location.href='oyunlar.html'">OYUNLAR</button>
+      <button class="button-style" class="button-style" onclick="location.href='tur.html'">TUR</button>
+      <button class="button-style" class="button-style" onclick="location.href='proqnozlar.html'">PROQNOZLAR</button>
+      <button class="button-style" class="button-style" onclick="location.href='oyun-neticeleri.html'">OYUN NƏTİCƏLƏRİ</button>
+      <button class="button-style" class="button-style" onclick="location.href='pipeprognoz.html'">PIPEPROQNOZ</button>
+<button class="button-style" class="button-style" onclick="location.href='turnir.html'">TURNİR CƏDVƏLİ</button>
     </div>
   </div>
 
