@@ -127,7 +127,7 @@
   </style>
 </head>
 <body>
-  <div style="background-color:#0a1a40; padding:20px; text-align:center;">
+  <div id="roadBanner" style="background-color:#0a1a40; padding:20px; text-align:center;">
   <h1 style="color:white; font-size:75px; margin:0;">ROAD TO PS5</h1>
 </div>
 <div class="login-container">
@@ -215,6 +215,15 @@
       } else {
         alert("Təhlükəsizlik kodu yalnışdır!");
       }
+    }
+  </script>
+
+
+  <script>
+    const currentUser = localStorage.getItem("currentUser");
+    if (currentUser) {
+      const banner = document.getElementById("roadBanner");
+      if (banner) banner.style.display = "none";
     }
   </script>
 

@@ -7,8 +7,10 @@
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; text-align: center; background-color: #f0f0f0; }
     h2 { color: #333; }
-    table { margin: 20px auto; border-collapse: collapse; background-color: #fff; width: 80%; }
-    th, td { padding: 10px; border: 1px solid #ccc; }
+    table {
+      font-size: 14px;
+      max-width: 800px; margin: 10px auto; border-collapse: collapse; background-color: #fff; width: 80%; }
+    th, td { padding: 6px; border: 1px solid #ccc; }
     th { background-color: #eee; }
     button {
       margin: 10px; padding: 10px 20px; font-weight: bold;
@@ -21,7 +23,7 @@
 <body>
   <h2>APARICI CƏDVƏLİ</h2>
   <div style="text-align:center;">
-  <button onclick="location.href='index.html'" style="margin: 20px auto; padding: 10px 25px; background-color: #000; color: #fff; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer;">ANA SƏHİFƏ</button>
+  <button onclick="location.href='index.html'" style="margin: 10px auto; padding: 10px 25px; background-color: #000; color: #fff; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer;">ANA SƏHİFƏ</button>
 </div>
   <button id="drawButton" onclick="drawAparici()">PÜŞK AT</button>
   <button id="confirmButton" onclick="confirmAparici()">APARICI CƏDVƏLİNİ TƏSDİQLƏ</button>
