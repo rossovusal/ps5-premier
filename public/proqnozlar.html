@@ -17,6 +17,8 @@
     table {
       font-size: 14px;
       max-width: 800px;
+      font-size: 14px;
+      max-width: 800px;
       width: 100%;
       border-collapse: collapse;
       background: white;
@@ -103,5 +105,16 @@
   }
 
 </script>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const end = parseInt(localStorage.getItem("deadlineCountdown"));
+  const now = Date.now();
+  if (!isNaN(end) && end < now) {
+    document.querySelectorAll("select").forEach(el => el.disabled = true);
+  }
+});
+</script>
 </body>
+
 </html>

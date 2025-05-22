@@ -54,10 +54,7 @@
     <button type="submit" style="background-color: green; color: white; font-size: 18px; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer;">GÖNDƏR</button>
   </form>
 
-  <div id="countdown">
-    <span id="timeLeft">48:00:00</span>
-  </div>
-
+  
   <script>
     const form = document.getElementById("gamesForm");
     const container = document.getElementById("matchesContainer");
@@ -134,42 +131,6 @@
       localStorage.setItem("deadlineCountdown", endTime.toString());
       alert("Uğurla göndərildi və oyunlar yadda saxlanıldı!");
       window.location.reload();
-    });
-
-    function startCountdown(duration) {
-      const timeSpan = document.getElementById("timeLeft");
-      let remaining = duration;
-
-      const timer = setInterval(() => {
-        const hours = Math.floor((remaining % (60 * 60 * 24)) / 3600);
-        const minutes = Math.floor((remaining % 3600) / 60);
-        const seconds = remaining % 60;
-
-        timeSpan.textContent =
-          String(hours).padStart(2, '0') + ":" +
-          String(minutes).padStart(2, '0') + ":" +
-          String(seconds).padStart(2, '0');
-
-        if (--remaining < 0) {
-          clearInterval(timer);
-          timeSpan.textContent = "00:00:00";
-        }
-      }, 1000);
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const end = parseInt(localStorage.getItem("deadlineCountdown"));
-      const now = new Date().getTime();
-      const diff = Math.floor((end - now) / 1000);
-      if (!isNaN(diff) && diff > 0 && localStorage.getItem("gamesLocked") === "true") {
-        startCountdown(diff);
-      }
-
-      const matchRows = document.querySelectorAll(".match-row");
-      if (matchRows.length > 0) {
-        const lastInputs = matchRows[matchRows.length - 1].querySelectorAll("input");
-        lastInputs.forEach(input => input.style.backgroundColor = "#e0e0e0");
-      }
     });
   </script>
 </body>

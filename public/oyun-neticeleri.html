@@ -45,7 +45,7 @@
 <body>
   <h2>OYUN NƏTİCƏLƏRİ</h2>
   <div style="text-align:center;">
-    <button onclick="location.href='index.html'" style="margin: 20px auto; padding: 10px 25px; background-color: #000; color: #fff; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer;">ANA SƏHİFƏ</button>
+    <button onclick="location.href='index.html'" style="margin: 10px auto; padding: 10px 25px; background-color: #000; color: #fff; border: none; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer;">ANA SƏHİFƏ</button>
   </div>
 
   
@@ -104,5 +104,16 @@
       alert("Nəticələr hesablandı!");
     });
   </script>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  const end = parseInt(localStorage.getItem("deadlineCountdown"));
+  const now = Date.now();
+  if (!isNaN(end) && end < now) {
+    document.querySelectorAll("select").forEach(el => el.disabled = true);
+  }
+});
+</script>
 </body>
+
 </html>

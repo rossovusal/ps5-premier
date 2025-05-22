@@ -53,6 +53,7 @@
     <div id="matchesContainer"></div>
     <button class="submit-btn" type="submit">PROQNOZLARI GÖNDƏR</button>
   </form>
+<div id="countdown" style="margin-top:30px; font-size:32px; font-weight:bold; background:yellow; color:black; padding:10px; border-radius:10px; display:inline-block;"><span id="timeLeft">--:--:--</span></div>
 
   <script>
     const loggedInUser = localStorage.getItem("loggedInUser");
@@ -129,6 +130,40 @@ localStorage.setItem("turLocked", "true");
     }
   });
 </script>
+
+<script>
+function startCountdown(duration) {
+  const timeSpan = document.getElementById("timeLeft");
+  let remaining = duration;
+  const timer = setInterval(() => {
+    const hours = Math.floor((remaining % (60 * 60 * 24)) / 3600);
+    const minutes = Math.floor((remaining % 3600) / 60);
+    const seconds = remaining % 60;
+    timeSpan.textContent =
+      String(hours).padStart(2, '0') + ":" +
+      String(minutes).padStart(2, '0') + ":" +
+      String(seconds).padStart(2, '0');
+    if (--remaining < 0) {
+      clearInterval(timer);
+      timeSpan.textContent = "00:00:00";
+      document.querySelectorAll("select").forEach(el => el.disabled = true);
+    }
+  }, 1000);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const end = parseInt(localStorage.getItem("deadlineCountdown"));
+  const now = Date.now();
+  const diff = Math.floor((end - now) / 1000);
+  if (!isNaN(diff) && diff > 0) {
+    startCountdown(diff);
+  } else {
+    document.querySelectorAll("select").forEach(el => el.disabled = true);
+    document.getElementById("timeLeft").textContent = "00:00:00";
+  }
+});
+</script>
 </body>
+
 
 </html>
